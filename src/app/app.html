@@ -1,0 +1,178 @@
+<!-- <router-outlet /> -->
+<h1 class="title-app">ToDo</h1>
+<div class="container">
+  <section class="progress">
+    <label class="label-progress">Progress</label>
+    <progress class="progress-bar" value="50" max="100">50%</progress>
+  </section>
+  <section class="dayly-list">
+    <label class="label-todo">Today</label>
+    <ul class="list-dayly">
+      <li class="dayly-item">
+        Remainder 1
+        <button class="btn-edit" aria-label="Edit Remainder">
+          <i class="icon-edit">✏️</i>
+        </button>
+        <button class="btn-delete" aria-label="Delete Remainder">
+          <i class="icon-delete">🗑️</i>
+        </button>
+      </li>
+      <li class="dayly-item">
+        Remainder 2
+        <button class="btn-edit" aria-label="Edit Remainder">
+          <i class="icon-edit">✏️</i>
+        </button>
+        <button class="btn-delete" aria-label="Delete Remainder">
+          <i class="icon-delete">🗑️</i>
+        </button>
+      </li>
+      <li class="dayly-item">
+        Remainder 2
+        <button class="btn-edit" aria-label="Edit Remainder">
+          <i class="icon-edit">✏️</i>
+        </button>
+        <button class="btn-delete" aria-label="Delete Remainder">
+          <i class="icon-delete">🗑️</i>
+        </button>
+      </li>
+    </ul>
+    <li class="item-todo">
+      <input type="checkbox" class="checkbox-todo" id="todo2" value="todo2" />
+      <label for="todo2">Task with deadline</label>
+      <button class="btn-edit" aria-label="Edit Task">
+        <i class="icon-edit">✏️</i>
+      </button>
+      <button class="btn-delete" aria-label="Delete Task">
+        <i class="icon-delete">🗑️</i>
+      </button>
+    </li>
+  </section>
+
+  <section class="todo-list">
+    <ul class="list-todo">
+      <li class="item-todo">
+        <input type="checkbox" class="checkbox-todo" id="todo1" value="todo1" />
+        <label for="todo1">Task 1</label>
+        <button class="btn-edit" aria-label="Edit Task">
+          <i class="icon-edit">✏️</i>
+        </button>
+        <button class="btn-delete" aria-label="Delete Task">
+          <i class="icon-delete">🗑️</i>
+        </button>
+
+        <ul>
+          <li class="subtask">
+            <input
+              type="checkbox"
+              class="checkbox-subtask"
+              id="subtask1"
+              value="subtask1"
+            />
+            <label for="subtask1">Subtask 1</label>
+            <button class="btn-edit-subtask" aria-label="Edit Subtask">
+              <i class="icon-edit-subtask">✏️</i>
+            </button>
+            <button class="btn-delete-subtask" aria-label="Delete Subtask">
+              <i class="icon-delete-subtask">🗑️</i>
+            </button>
+          </li>
+          <li class="subtask">
+            <input
+              type="checkbox"
+              class="checkbox-subtask"
+              id="subtask2"
+              value="subtask2"
+            />
+            <label for="subtask2">Subtask 2</label>
+            <button class="btn-edit-subtask" aria-label="Edit Subtask">
+              <i class="icon-edit-subtask">✏️</i>
+            </button>
+            <button class="btn-delete -subtask" aria-label="Delete Subtask">
+              <i class="icon-delete-subtask">🗑️</i>
+            </button>
+          </li>
+        </ul>
+      </li>
+
+      <li class="item-todo">
+        <input type="checkbox" class="checkbox-todo" id="todo3" value="todo3" />
+        <label for="todo3">Task 3</label>
+        <button class="btn-edit" aria-label="Edit Task">
+          <i class="icon-edit">✏️</i>
+        </button>
+        <button class="btn-delete" aria-label="Delete Task">
+          <i class="icon-delete">🗑️</i>
+        </button>
+      </li>
+    </ul>
+  </section>
+
+  <section class="todo-add">
+    <button id="add-task">+</button>
+    <div id="modal-task" class="modal-task">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add New Task</h2>
+        <form id="task-form">
+          <label for="task-name">Task Name:</label>
+          <input type="text" id="task-name" name="task-name" required />
+          <label for="task-description">Description:</label>
+          <textarea
+            id="task-description"
+            name="task-description"
+            rows="4"
+            required
+          ></textarea>
+          <label for="task-due-date">Due Date:</label>
+          <input type="date" id="task-due-date" name="task-due-date" required />
+          <label for="task-priority">Priority:</label>
+          <select id="task-priority" name="task-priority" required>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+          <label for="task-status">Status:</label>
+          <select id="task-status" name="task-status" required>
+            <option value="not-started">Not Started</option>
+            <option value="in-progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+          <label for="task-scheduel">Schedule</label>
+          <input
+            type="datetime-local"
+            id="task-schedule"
+            name="task-schedule"
+          />
+          <button type="submit">
+            Add Task
+            <i class="icon-add"> ➕</i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+  <section class="navigation">
+    <nav class="nav-bar">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a class="nav-link" href="/home">
+            <i class="icon-home">🏠</i>
+            Home</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/calendar">
+            <i class="icon-calendar">📅</i>
+            calendar</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/notes">
+            <i class="icon-notes">📝</i>
+            notes</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </section>
+</div>
