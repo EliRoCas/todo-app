@@ -1,211 +1,25 @@
 <div class="container">
   <h1 class="title-app">ToDo</h1>
 
-  <section class="progress">
-    <label class="label-progress">Progress</label>
-    <progress class="progress-bar" id="progressBar" value="33" max="100">
-      33%
-    </progress>
-  </section>
+  <app-progress-bar />
 
   <section class="dayly-list">
     <label class="label-todo">Today</label>
-    <ul class="list-dayly" id="todayList">
-      <li class="dayly-item">
-        Morning meeting preparation
-        <button class="btn-edit" aria-label="Edit Remainder">
-          <i class="icon-edit">✏️</i>
-        </button>
-        <button class="btn-delete" aria-label="Delete Remainder">
-          <i class="icon-delete">🗑️</i>
-        </button>
-      </li>
-      <li class="dayly-item expired">
-        Call dentist (expired)
-        <button class="btn-edit" aria-label="Edit Remainder">
-          <i class="icon-edit">✏️</i>
-        </button>
-        <button class="btn-delete" aria-label="Delete Remainder">
-          <i class="icon-delete">🗑️</i>
-        </button>
-      </li>
-      <li class="item-todo">
-        <input
-          type="checkbox"
-          class="checkbox-todo"
-          id="todayTask"
-          value="todayTask"
-        />
-        <label for="todayTask">Submit quarterly report (Due today)</label>
-        <button class="btn-edit" aria-label="Edit Task">
-          <i class="icon-edit">✏️</i>
-        </button>
-        <button class="btn-delete" aria-label="Delete Task">
-          <i class="icon-delete">🗑️</i>
-        </button>
-      </li>
-    </ul>
+
+    @for(task of today(); track task.id ){
+    <app-item-container [task]="task" />
+    }
   </section>
 
   <section class="todo-list">
     <label class="label-todo">All Tasks</label>
-    <ul class="list-todo">
-      <li class="item-todo has-subtasks">
-        <button class="toggle-subtasks expanded" data-target="subtasks1">
-          ▶
-        </button>
-        <input type="checkbox" class="checkbox-todo" id="todo1" value="todo1" />
-        <label for="todo1">Complete project documentation</label>
-        <button class="btn-edit" aria-label="Edit Task">
-          <i class="icon-edit">✏️</i>
-        </button>
-        <button class="btn-delete" aria-label="Delete Task">
-          <i class="icon-delete">🗑️</i>
-        </button>
 
-        <ul class="subtasks expanded" id="subtasks1">
-          <li class="subtask">
-            <input
-              type="checkbox"
-              class="checkbox-subtask"
-              id="subtask1"
-              value="subtask1"
-            />
-            <label for="subtask1">Write introduction section</label>
-            <button class="btn-edit-subtask" aria-label="Edit Subtask">
-              <i class="icon-edit-subtask">✏️</i>
-            </button>
-            <button class="btn-delete-subtask" aria-label="Delete Subtask">
-              <i class="icon-delete-subtask">🗑️</i>
-            </button>
-          </li>
-          <li class="subtask">
-            <input
-              type="checkbox"
-              class="checkbox-subtask"
-              id="subtask2"
-              value="subtask2"
-              checked
-            />
-            <label for="subtask2" class="completed"
-              >Create diagrams and charts</label
-            >
-            <button class="btn-edit-subtask" aria-label="Edit Subtask">
-              <i class="icon-edit-subtask">✏️</i>
-            </button>
-            <button class="btn-delete-subtask" aria-label="Delete Subtask">
-              <i class="icon-delete-subtask">🗑️</i>
-            </button>
-          </li>
-        </ul>
-      </li>
-
-      <li class="item-todo">
-        <input
-          type="checkbox"
-          class="checkbox-todo"
-          id="todo2"
-          value="todo2"
-          checked
-        />
-        <label for="todo2" class="completed">Review team feedback</label>
-        <button class="btn-edit" aria-label="Edit Task">
-          <i class="icon-edit">✏️</i>
-        </button>
-        <button class="btn-delete" aria-label="Delete Task">
-          <i class="icon-delete">🗑️</i>
-        </button>
-      </li>
-
-      <li class="item-todo has-subtasks collapsed">
-        <button class="toggle-subtasks" data-target="subtasks3">▶</button>
-        <input type="checkbox" class="checkbox-todo" id="todo3" value="todo3" />
-        <label for="todo3">Plan next sprint goals</label>
-        <button class="btn-edit" aria-label="Edit Task">
-          <i class="icon-edit">✏️</i>
-        </button>
-        <button class="btn-delete" aria-label="Delete Task">
-          <i class="icon-delete">🗑️</i>
-        </button>
-
-        <ul class="subtasks collapsed" id="subtasks3">
-          <li class="subtask">
-            <input
-              type="checkbox"
-              class="checkbox-subtask"
-              id="subtask3"
-              value="subtask3"
-            />
-            <label for="subtask3">Analyze current progress</label>
-            <button class="btn-edit-subtask" aria-label="Edit Subtask">
-              <i class="icon-edit-subtask">✏️</i>
-            </button>
-            <button class="btn-delete-subtask" aria-label="Delete Subtask">
-              <i class="icon-delete-subtask">🗑️</i>
-            </button>
-          </li>
-          <li class="subtask">
-            <input
-              type="checkbox"
-              class="checkbox-subtask"
-              id="subtask4"
-              value="subtask4"
-            />
-            <label for="subtask4">Set priorities for next week</label>
-            <button class="btn-edit-subtask" aria-label="Edit Subtask">
-              <i class="icon-edit-subtask">✏️</i>
-            </button>
-            <button class="btn-delete-subtask" aria-label="Delete Subtask">
-              <i class="icon-delete-subtask">🗑️</i>
-            </button>
-          </li>
-          <li class="subtask">
-            <input
-              type="checkbox"
-              class="checkbox-subtask"
-              id="subtask5"
-              value="subtask5"
-            />
-            <label for="subtask5">Schedule team meeting</label>
-            <button class="btn-edit-subtask" aria-label="Edit Subtask">
-              <i class="icon-edit-subtask">✏️</i>
-            </button>
-            <button class="btn-delete-subtask" aria-label="Delete Subtask">
-              <i class="icon-delete-subtask">🗑️</i>
-            </button>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    @for(task of otherDays(); track task.id ){
+    <app-item-container [task]="task" />
+    }
   </section>
 
-  <section class="navigation">
-    <nav class="nav-bar">
-      <ul class="nav-list">
-        <li class="nav-item">
-          <a class="nav-link" href="/home">
-            <i class="icon-home">🏠</i>
-            Home
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/calendar">
-            <i class="icon-calendar">📅</i>
-            Calendar
-          </a>
-        </li>
-        <li class="nav-item">
-          <button class="add-btn" id="addBtn" aria-label="Add new task">
-            +
-          </button>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/notes">
-            <i class="icon-notes">📝</i>
-            Notes
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </section>
+
 </div>
+
+<app-nav />

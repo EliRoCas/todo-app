@@ -1,32 +1,23 @@
-<div class="form-container">
+<div class="form-container" [formGroup]="taskForm">
   <div class="form-header">
     <h1 class="form-title">Create New Task</h1>
     <p class="form-subtitle">Break it down, get it done</p>
   </div>
 
   <form id="taskForm">
-    <div class="form-group">
+    <div>
       <label class="form-label required" for="taskName">Task Name</label>
-      <input
-        type="text"
-        id="taskName"
-        class="form-input"
-        placeholder="What needs to be done?"
-        required
-      />
+      <input type="text" id="taskName" class="form-input" placeholder="What needs to be done?"
+        formControlName="title" />
     </div>
 
-    <div class="form-group">
+    <div>
       <label class="form-label required">Priority</label>
       <div class="priority-buttons">
         <button type="button" class="priority-btn low" data-priority="low">
           <span>🟢</span> Low
         </button>
-        <button
-          type="button"
-          class="priority-btn medium selected"
-          data-priority="medium"
-        >
+        <button type="button" class="priority-btn medium selected" data-priority="medium">
           <span>🟡</span> Medium
         </button>
         <button type="button" class="priority-btn high" data-priority="high">
@@ -35,71 +26,51 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">Subtasks</label>
-      <div class="subtasks-section">
-        <div class="subtasks-header">
-          <div class="subtasks-title">
-            <span>📋</span>
-            Break down your task
-          </div>
-          <button type="button" class="add-subtask-btn" id="addSubtaskBtn">
-            + Add Subtask
-          </button>
-        </div>
-        <div id="subtasksList">
-          <div class="subtask-item">
-            <input
-              type="text"
-              class="subtask-input"
-              placeholder="Subtask name..."
-            />
-            <select class="subtask-priority low">
-              <option value="low" selected>🟢 Low</option>
-              <option value="medium">🟡 Medium</option>
-              <option value="high">🔴 High</option>
-            </select>
-            <button type="button" class="remove-subtask">×</button>
-          </div>
-        </div>
+    <app-panel title="Subtasks">
+      <div class="subtasks-header">
+        <button type="button" class="add-subtask-btn" (click)="addSubTask()">
+          + Add Subtask
+        </button>
       </div>
-    </div>
+      <div class="subtasks-list">
+        @for(subTask of subTasksForm.controls; track subTask){
+        <div class="subtask-item" [formGroup]="toGroup(subTask)">
+          <input type="text" class="subtask-input" placeholder="Subtask name..." formControlName="title" />
+          <!-- <select class="subtask-priority low">
+            <option value="low" selected>🟢 Low</option>
+            <option value="medium">🟡 Medium</option>
+            <option value="high">🔴 High</option>
+          </select> -->
+          <button type="button" class="remove-subtask">×</button>
+        </div>
+        }
+      </div>
+    </app-panel>
 
-    <div class="collapse-section">
-      <div class="collapse-header" id="optionalToggle">
-        <span class="collapse-title">Optional Settings</span>
-        <span class="collapse-icon">▼</span>
-      </div>
-      <div class="collapse-content" id="optionalContent">
-        <div class="optional-fields">
-          <div class="form-group">
-            <label class="form-label" for="deadline">Deadline</label>
-            <input type="datetime-local" id="deadline" class="form-input" />
-          </div>
+    <app-panel title="Optional Settings" [isExpandable]="true">
+      <div class="optional-fields">
+        <div class="form-group">
+          <label class="form-label" for="deadline">Deadline</label>
+          <input type="datetime-local" id="deadline" class="form-input" />
+        </div>
 
-          <div class="form-group">
-            <label class="form-label">Focus Timer</label>
-            <div class="timer-input">
-              <input
-                type="number"
-                id="focusMinutes"
-                class="form-input timer-number"
-                min="1"
-                max="180"
-                value="25"
-              />
-              <span>minutes of focused work</span>
-            </div>
+        <div class="form-group">
+          <label class="form-label">Focus Timer</label>
+          <div class="timer-input">
+            <input type="number" id="focusMinutes" class="form-input timer-number" min="1" max="180" value="25" />
+            <span>minutes of focused work</span>
           </div>
         </div>
       </div>
-    </div>
+    </app-panel>
 
     <div class="form-buttons">
-      <button type="button" class="btn btn-secondary" id="cancelBtn">
+      <button type="button" class="btn btn-secondary" (click)="dialogRef.close()">
         Cancel
       </button>
-      <button type="submit" class="btn btn-primary">Create Task</button>
+      <button type="submit" class="btn btn-primary" (click)="save($event)" [disabled]="taskForm.invalid">
+        Create Task
+      </button>
     </div>
   </form>
 </div>

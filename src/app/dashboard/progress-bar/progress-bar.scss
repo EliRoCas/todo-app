@@ -1,0 +1,36 @@
+.progress {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.label-progress {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    border-radius: 6px;
+    appearance: none;
+    background-color: #e2e8f0;
+    overflow: hidden;
+}
+
+.progress-bar::-webkit-progress-bar {
+    background-color: #e2e8f0;
+    border-radius: 6px;
+}
+
+.progress-bar::-webkit-progress-value {
+    background: linear-gradient(90deg, #48bb78, #38a169);
+    border-radius: 6px;
+}
+
+.progress-bar::-moz-progress-bar {
+    background: linear-gradient(90deg, #48bb78, #38a169);
+    border-radius: 6px;
+}

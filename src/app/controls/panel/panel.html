@@ -1,0 +1,21 @@
+<section class="collapse-container">
+
+    @if(isExpandable()){
+    <div class="collapse-header" [class.active]="advancedOptions()" (click)="toggleOptions()">
+        <span class="collapse-title">{{title()}}</span>
+        <span class="collapse-icon">▼</span>
+    </div>
+    }@else{
+    <div class="collapse-header">
+        <span class="collapse-title">{{title()}}</span>
+    </div>
+    }
+
+    @if (advancedOptions()|| !isExpandable()){
+    <hr>
+    <div class="collapse-content" id="optionalContent">
+        <ng-content />
+    </div>
+    }
+
+</section>

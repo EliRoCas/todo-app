@@ -1,0 +1,31 @@
+<div class="item-todo" [class.expired]="task().expired">
+    <input type="checkbox" class="checkbox-todo" [id]="task().id" [ngModel]="task().completed"
+        (ngModelChange)="toggleCompletation(task())" />
+
+    @if(hasSubTasks())
+    {
+    <button class="toggle-subtasks expanded" (click)="toggleSubTasks()">
+        ▼
+    </button>
+    }
+
+    <label [for]="task().id">{{task().title}}</label>
+    <button class="btn-edit" aria-label="Edit Task" (click)="edit()">
+        <i class="icon-edit">✏️</i>
+    </button>
+    <button class="btn-delete" aria-label="Delete Task" (click)="delete()">
+        <i class="icon-delete">🗑️</i>
+    </button>
+</div>
+
+@if (showSubTasks()){
+<ul class="subtasks expanded" id="subtasks1">
+    @for(task of subTasks(); track task.id){
+    <li class="subtask">
+        <input type="checkbox" class="checkbox-subtask" [id]="task.id" [ngModel]="task.completed"
+            (ngModelChange)="toggleCompletation(task)" />
+        <label [for]="task.id">{{task.title}}</label>
+    </li>
+    }
+</ul>
+}

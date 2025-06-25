@@ -1,151 +1,74 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import {
-  trigger,
-  state,
-  style,
-  transition,
-  animate,
-} from '@angular/animations';
+import { Component, inject, signal } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TaskInterface, TasksService } from '../services/tasks.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Panel } from '../controls/panel/panel';
 
 @Component({
   selector: 'app-task-form',
-  imports: [CommonModule, FormsModule],
+  imports: [ReactiveFormsModule, Panel],
   templateUrl: './task-form.html',
-  styleUrl: './task-form.scss',
-  animations: [
-    trigger('fadeOut', [
-      state('void', style({ opacity: 0, transform: 'translateX(-100%)' })),
-      transition(':leave', [
-        animate(
-          '0.3s ease',
-          style({ opacity: 0, transform: 'translateX(-100%)' })
-        ),
-      ]),
-    ]),
-  ],
+  styleUrl: './task-form.scss'
 })
 export class TaskForm {
-  progress = 0;
-  tasks: Task[] = [];
-  newTaskText = '';
 
-  ngOnInit(): void {
-    // Initialize with some sample tasks if needed
-    this.tasks = [
-      {
-        id: 'todo1',
-        text: 'Sample Task 1',
-        completed: false,
-        subtasks: [
-          { id: 'sub1', text: 'Subtask 1', completed: false },
-          { id: 'sub2', text: 'Subtask 2', completed: false },
-        ],
-        expanded: false,
-      },
-    ];
-    this.updateProgress();
-  }
+  readonly _fb = inject(FormBuilder);
+  readonly dialogRef = inject(MatDialogRef);
+  readonly tasksService = inject(TasksService);
+  readonly data = inject<TaskInterface>(MAT_DIALOG_DATA, { optional: true });
 
-  ngAfterViewInit(): void {
-    this.updateProgress();
-  }
+  advancedOptions = signal(false);
 
-  updateProgress(): void {
-    const allCheckboxes = this.getAllCheckboxes();
-    const checkedCheckboxes = this.getCheckedCheckboxes();
-    this.progress =
-      allCheckboxes.length > 0
-        ? Math.round((checkedCheckboxes.length / allCheckboxes.length) * 100)
-        : 0;
-  }
+  taskForm = this._fb.group({
+    id: this._fb.control(crypto.randomUUID().toString(), { nonNullable: true }),
+    title: this._fb.control('', { nonNullable: true, validators: [Validators.required] }),
+    date: this._fb.control(new Date(), { nonNullable: true, validators: [Validators.required] }),
+  });
 
-  onCheckboxChange(task: Task, subtask?: Subtask): void {
-    if (subtask) {
-      subtask.completed = !subtask.completed;
-    } else {
-      task.completed = !task.completed;
-    }
-    this.updateProgress();
-  }
+  subTasksForm = this._fb.array([]);
 
-  toggleSubtasks(task: Task): void {
-    task.expanded = !task.expanded;
-  }
+  constructor() {
+    if (this.data) {
+      this.taskForm.patchValue(this.data);
 
-  deleteItem(task: Task): void {
-    const index = this.tasks.indexOf(task);
-    if (index > -1) {
-      this.tasks.splice(index, 1);
-      this.updateProgress();
-    }
-  }
-
-  editItem(task: Task, subtask?: Subtask): void {
-    const currentText = subtask ? subtask.text : task.text;
-    const newText = prompt('Edit task:', currentText);
-    if (newText && newText !== currentText) {
-      if (subtask) {
-        subtask.text = newText;
-      } else {
-        task.text = newText;
-      }
-    }
-  }
-
-  addTask(): void {
-    if (this.newTaskText.trim()) {
-      const newTask: Task = {
-        id: 'todo' + Date.now(),
-        text: this.newTaskText.trim(),
-        completed: false,
-        subtasks: [],
-        expanded: false,
-      };
-      this.tasks.push(newTask);
-      this.newTaskText = '';
-      this.updateProgress();
-    }
-  }
-
-  addSubtask(task: Task): void {
-    const subtaskText = prompt('Enter new subtask:');
-    if (subtaskText?.trim()) {
-      task.subtasks.push({
-        id: 'sub' + Date.now(),
-        text: subtaskText.trim(),
-        completed: false,
+      let subTasks = this.tasksService.getSubTasks(this.data);
+      subTasks.forEach(s => {
+        this.subTasksForm.push(this._fb.group({
+          id: this._fb.control(s.id, { nonNullable: true }),
+          title: this._fb.control(s.title, { nonNullable: true, validators: [Validators.required] }),
+          date: this._fb.control(s.date, { nonNullable: true, validators: [Validators.required] }),
+          parentId: this._fb.control(s.parentId, { nonNullable: true, validators: [Validators.required] }),
+        }) as any);
       });
-      this.updateProgress();
     }
   }
 
-  private getAllCheckboxes(): number {
-    return this.tasks.reduce((count, task) => {
-      return count + 1 + task.subtasks.length;
-    }, 0);
+  save(event: MouseEvent) {
+    event.preventDefault();
+
+    let task: TaskInterface = this.taskForm.getRawValue();
+    let subTasks = this.subTasksForm.value as TaskInterface[];
+
+    this.tasksService.addOrUpdate(task);
+    this.tasksService.addOrUpdate(...subTasks);
+    this.dialogRef.close();
   }
 
-  private getCheckedCheckboxes(): number {
-    return this.tasks.reduce((count, task) => {
-      const taskCount = task.completed ? 1 : 0;
-      const subtaskCount = task.subtasks.filter((sub) => sub.completed).length;
-      return count + taskCount + subtaskCount;
-    }, 0);
+  toGroup(control: FormControl) {
+    return control as unknown as FormGroup;
   }
-}
 
-interface Task {
-  id: string;
-  text: string;
-  completed: boolean;
-  subtasks: Subtask[];
-  expanded: boolean;
-}
+  addSubTask() {
+    this.subTasksForm.push(this._fb.group({
+      id: this._fb.control(crypto.randomUUID().toString(), { nonNullable: true }),
+      title: this._fb.control('', { nonNullable: true, validators: [Validators.required] }),
+      date: this._fb.control(new Date(), { nonNullable: true, validators: [Validators.required] }),
+      parentId: this._fb.control(this.taskForm.value.id, { nonNullable: true, validators: [Validators.required] }),
+    }) as any);
+  }
 
-interface Subtask {
-  id: string;
-  text: string;
-  completed: boolean;
+  toggleOptions() {
+    this.advancedOptions.update(value => !value);
+  }
+
 }
