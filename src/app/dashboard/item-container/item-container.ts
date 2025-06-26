@@ -3,10 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { TasksService, TaskInterface } from '../../services/tasks.service';
 import { TaskForm } from '../../task-form/task-form';
 import { FormsModule } from '@angular/forms';
+import { Panel } from '../../controls/panel/panel';
 
 @Component({
   selector: 'app-item-container',
-  imports: [FormsModule],
+  imports: [FormsModule, Panel],
   templateUrl: './item-container.html',
   styleUrl: './item-container.scss',
   encapsulation: ViewEncapsulation.None

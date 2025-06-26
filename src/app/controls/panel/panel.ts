@@ -1,19 +1,17 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, input, model } from '@angular/core';
 
 @Component({
   selector: 'app-panel',
-  imports: [],
   templateUrl: './panel.html',
   styleUrl: './panel.scss'
 })
 export class Panel {
 
-  title = input.required<string>();
   isExpandable = input(false);
-
-  advancedOptions = signal(false);
+  hasContent = input(true);
+  isExpanded = model(false);
 
   toggleOptions() {
-    this.advancedOptions.update(value => !value);
+    this.isExpanded.update(value => !value);
   }
 }

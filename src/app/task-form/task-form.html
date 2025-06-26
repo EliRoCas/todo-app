@@ -26,12 +26,15 @@
       </div>
     </div>
 
-    <app-panel title="Subtasks">
-      <div class="subtasks-header">
+    <app-panel>
+      <div title class="flex justify-between items-center">
+        Subtasks
+
         <button type="button" class="add-subtask-btn" (click)="addSubTask()">
           + Add Subtask
         </button>
       </div>
+
       <div class="subtasks-list">
         @for(subTask of subTasksForm.controls; track subTask){
         <div class="subtask-item" [formGroup]="toGroup(subTask)">
@@ -47,7 +50,11 @@
       </div>
     </app-panel>
 
-    <app-panel title="Optional Settings" [isExpandable]="true">
+    <app-panel [isExpandable]="true">
+      <ng-container title>
+        Optional Settings
+      </ng-container>
+
       <div class="optional-fields">
         <div class="form-group">
           <label class="form-label" for="deadline">Deadline</label>

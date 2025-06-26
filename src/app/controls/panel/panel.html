@@ -1,19 +1,20 @@
 <section class="collapse-container">
 
-    @if(isExpandable()){
-    <div class="collapse-header" [class.active]="advancedOptions()" (click)="toggleOptions()">
-        <span class="collapse-title">{{title()}}</span>
-        <span class="collapse-icon">▼</span>
-    </div>
-    }@else{
-    <div class="collapse-header">
-        <span class="collapse-title">{{title()}}</span>
-    </div>
-    }
+    <div class="collapse-header" [class.active]="isExpandable() && isExpanded()"
+        (click)="isExpandable() && toggleOptions()">
 
-    @if (advancedOptions()|| !isExpandable()){
+        <span class="collapse-icon" [style.visibility]="isExpandable() ? 'visible' : 'hidden'">
+            ▼
+        </span>
+
+        <div class="collapse-title">
+            <ng-content select="[title]"></ng-content>
+        </div>
+    </div>
+
+    @if ((isExpanded() || !isExpandable()) && hasContent()){
     <hr>
-    <div class="collapse-content" id="optionalContent">
+    <div class="collapse-content">
         <ng-content />
     </div>
     }

@@ -3,7 +3,7 @@
 
   <app-progress-bar />
 
-  <section class="dayly-list">
+  <section class="flex flex-col gap-y-2">
     <label class="label-todo">Today</label>
 
     @for(task of today(); track task.id ){
@@ -11,7 +11,7 @@
     }
   </section>
 
-  <section class="todo-list">
+  <section class="flex flex-col gap-y-2">
     <label class="label-todo">All Tasks</label>
 
     @for(task of otherDays(); track task.id ){
