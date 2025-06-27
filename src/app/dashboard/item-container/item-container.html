@@ -1,6 +1,6 @@
-<app-panel [isExpandable]="hasSubTasks()" [hasContent]="hasSubTasks()">
+<app-panel [isExpandable]="hasSubTasks()" [hasContent]="hasSubTasks()" [panelClass]="task().expired ? 'expired' : ''">
 
-    <div title class="item-todo flex justify-between items-center gap-x-2" [class.expired]="task().expired">
+    <div title class="item-todo flex justify-between items-center gap-x-2">
         <input type="checkbox" class="checkbox-todo" [id]="task().id" [ngModel]="task().completed"
             (ngModelChange)="toggleCompletation(task())" />
 

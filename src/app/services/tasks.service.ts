@@ -49,24 +49,24 @@ export class TasksService {
       date: new Date()
     },
     {
-      id: 'asdasdasd',
+      id: '4fbc72fc-78ea-4b2d-a806-e0d5b0796a7f',
       title: 'Complete project documentation',
       date: addDays(new Date(), 1),
     },
-    { id: crypto.randomUUID(), title: 'Write introduction section', date: new Date(), parentId: 'asdasdasd' },
-    { id: crypto.randomUUID(), title: 'Create diagrams and charts', completed: true, date: new Date(), parentId: 'asdasdasd' },
+    { id: crypto.randomUUID(), title: 'Write introduction section', date: new Date(), parentId: '4fbc72fc-78ea-4b2d-a806-e0d5b0796a7f' },
+    { id: crypto.randomUUID(), title: 'Create diagrams and charts', completed: true, date: new Date(), parentId: '4fbc72fc-78ea-4b2d-a806-e0d5b0796a7f' },
     {
       id: crypto.randomUUID(),
       title: 'Review team feedback',
       date: addDays(new Date(), 1)
     },
     {
-      id: 'asdasdfsdsdasd',
+      id: '3c50320e-2462-49aa-834b-e25fdf76c911',
       title: 'Plan next sprint goals',
       date: addDays(new Date(), 1)
     },
-    { id: crypto.randomUUID(), title: 'sprint 1', date: addDays(new Date(), 1), parentId: 'asdasdfsdsdasd' },
-    { id: crypto.randomUUID(), title: 'sprint 2', date: addDays(new Date(), 1), parentId: 'asdasdfsdsdasd' }
+    { id: crypto.randomUUID(), title: 'sprint 1', date: addDays(new Date(), 1), parentId: '3c50320e-2462-49aa-834b-e25fdf76c911' },
+    { id: crypto.randomUUID(), title: 'sprint 2', date: addDays(new Date(), 1), parentId: '3c50320e-2462-49aa-834b-e25fdf76c911' }
   ]);
 
   tasks = computed(() => this._allTasks().filter(x => !x.parentId));

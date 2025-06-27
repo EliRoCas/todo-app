@@ -5,24 +5,22 @@
   </div>
 
   <form id="taskForm">
-    <div>
-      <label class="form-label required" for="taskName">Task Name</label>
-      <input type="text" id="taskName" class="form-input" placeholder="What needs to be done?"
-        formControlName="title" />
-    </div>
+    <app-input label="Task Name" type="text" formControlName="title" placeholder="What needs to be done?" />
 
     <div>
       <label class="form-label required">Priority</label>
       <div class="priority-buttons">
-        <button type="button" class="priority-btn low" data-priority="low">
+
+        <app-input type="button-toogle" option="low" formControlName="priority">
           <span>🟢</span> Low
-        </button>
-        <button type="button" class="priority-btn medium selected" data-priority="medium">
+        </app-input>
+        <app-input type="button-toogle" option="medium" formControlName="priority">
           <span>🟡</span> Medium
-        </button>
-        <button type="button" class="priority-btn high" data-priority="high">
+        </app-input>
+        <app-input type="button-toogle" option="high" formControlName="priority">
           <span>🔴</span> High
-        </button>
+        </app-input>
+
       </div>
     </div>
 
@@ -35,19 +33,18 @@
         </button>
       </div>
 
-      <div class="subtasks-list">
-        @for(subTask of subTasksForm.controls; track subTask){
-        <div class="subtask-item" [formGroup]="toGroup(subTask)">
-          <input type="text" class="subtask-input" placeholder="Subtask name..." formControlName="title" />
-          <!-- <select class="subtask-priority low">
+      @for(subTask of subTasksForm.controls; track subTask){
+      <div class="flex gap-x-1 items-start" [formGroup]="toGroup(subTask)">
+        <app-input type="text" formControlName="title" placeholder="Subtask name..." />
+
+        <!-- <select class="subtask-priority low">
             <option value="low" selected>🟢 Low</option>
             <option value="medium">🟡 Medium</option>
             <option value="high">🔴 High</option>
           </select> -->
-          <button type="button" class="remove-subtask">×</button>
-        </div>
-        }
+        <button type="button" class="remove-subtask">×</button>
       </div>
+      }
     </app-panel>
 
     <app-panel [isExpandable]="true">
@@ -55,20 +52,8 @@
         Optional Settings
       </ng-container>
 
-      <div class="optional-fields">
-        <div class="form-group">
-          <label class="form-label" for="deadline">Deadline</label>
-          <input type="datetime-local" id="deadline" class="form-input" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Focus Timer</label>
-          <div class="timer-input">
-            <input type="number" id="focusMinutes" class="form-input timer-number" min="1" max="180" value="25" />
-            <span>minutes of focused work</span>
-          </div>
-        </div>
-      </div>
+      <app-input label="Deadline" type="datetime" formControlName="date" placeholder="yyyyMMdd hh:mm" />
+      <app-input label="Focus Timer" type="text" />
     </app-panel>
 
     <div class="form-buttons">

@@ -1,9 +1,9 @@
-<section class="collapse-container">
+<section [class]="`collapse-container ${panelClass()}`">
 
-    <div class="collapse-header" [class.active]="isExpandable() && isExpanded()"
-        (click)="isExpandable() && toggleOptions()">
+    <div class="collapse-header" [class.active]="isExpandable() && isExpanded()">
 
-        <span class="collapse-icon" [style.visibility]="isExpandable() ? 'visible' : 'hidden'">
+        <span class="collapse-icon" [style.visibility]="isExpandable() ? 'visible' : 'hidden'"
+            (click)="isExpandable() && toggleOptions()">
             ▼
         </span>
 

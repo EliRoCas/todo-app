@@ -10,6 +10,7 @@ export class Panel {
   isExpandable = input(false);
   hasContent = input(true);
   isExpanded = model(false);
+  panelClass = input('');
 
   toggleOptions() {
     this.isExpanded.update(value => !value);

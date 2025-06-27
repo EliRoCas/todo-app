@@ -1,0 +1,53 @@
+@switch (type()) {
+
+@case ('textarea') {
+<div class="form-group">
+    <ng-container *ngTemplateOutlet="labelRef" />
+
+    <textarea [id]="id()" class="form-input form-textarea" [placeholder]="placeholder()" [ngModel]="inputValue"
+        (ngModelChange)="inputChanged($event)" (focus)="onTouched()"></textarea>
+</div>
+}
+
+@case ('datetime') {
+<div class="form-group">
+    <ng-container *ngTemplateOutlet="labelRef" />
+
+    <div class="datetime-group">
+        <input class="form-input" type="datetime-local" [id]="id()" [ngModel]="inputValue"
+            (ngModelChange)="inputChanged($event)" (focus)="onTouched()">
+    </div>
+</div>
+}
+
+@case ('checkbox') {
+<div class="alarm-option" [class.selected]="inputValue" (click)="inputChanged(option()!)">
+    <div class=" alarm-radio"></div>
+    <span>{{ label() }}</span>
+</div>
+}
+
+@case ('button-toogle') {
+<button type="button" class="priority-btn" [class.selected]="value() === option()" (click)="inputChanged(option()!)">
+    <ng-content />
+</button>
+}
+
+@default {
+<div class="form-group">
+    <ng-container *ngTemplateOutlet="labelRef" />
+
+    <input type="text" [id]="id()" class="form-input" [class.subtask-input]="size() === 'm'"
+        [placeholder]="placeholder()" [ngModel]="inputValue" (ngModelChange)="inputChanged($event)"
+        (focus)="onTouched()" />
+</div>
+}
+
+}
+
+<ng-template #labelRef>
+    @if(label())
+    {
+    <label class="form-label" [class.required]="required()" [for]="id()">{{ label() }}</label>
+    }
+</ng-template>

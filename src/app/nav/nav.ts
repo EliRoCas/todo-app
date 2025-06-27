@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskForm } from '../task-form/task-form';
+import { EventReminderForm } from '../event-reminder-form/event-reminder-form';
 
 @Component({
   selector: 'app-nav',
@@ -14,6 +15,10 @@ export class Nav {
 
   addTask() {
     this.dialog.open(TaskForm);
+  }
+
+  addReminder() {
+    this.dialog.open(EventReminderForm);
   }
 
 }
