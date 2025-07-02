@@ -6,9 +6,9 @@
         {
             InitializeComponent();
 
-#if DEBUG
-            webView.Source = "http://localhost:4200/";
-#endif
+//#if DEBUG
+//            webView.Source = "http://localhost:4200/";
+//#endif
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿using Interop.Maui;
+﻿using Interop.Db.Abstractions;
+using Interop.Maui;
+using Microsoft.EntityFrameworkCore;
+using Telegram.API;
+using TodoDb;
 
 namespace BackEnd
 {
@@ -28,24 +32,62 @@ namespace BackEnd
                         Shell.Current.CurrentPage.DisplayAlert("Error", ex.Message, "OK");
                     }
                 })
-                .UseInteropDefaults(typeof(WeatherForecastController).Assembly);
+                .UseInteropDefaults(typeof(MessagesController).Assembly);
+
+            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "mydatabase.db");
+            string sessionPath = Path.Combine(FileSystem.AppDataDirectory, "tg.session");
+
+            builder.Services.AddDbContext<TodoContext>(options =>
+            {
+                options.UseSqlite($"Filename={dbPath}");
+            });
+
+
+            builder.Services.AddTelegramApi<TodoContext>(new TelegramOptions()
+            {
+                ConfigProvider = (what) =>
+                {
+                    switch (what)
+                    {
+                        case "session_pathname": return sessionPath;
+                        case "api_id": return "27022097";
+                        case "api_hash": return "13121228f93951afd95c1cb49b803e56";
+                        case "phone_number": return "+573124330119";
+                        case "verification_code": return MainThread.InvokeOnMainThreadAsync(async () => await Shell.Current.DisplayPromptAsync("Code", "Tg code")).GetAwaiter().GetResult();
+                        case "password": return "";
+                        case "chat_name": return "Todo-ea";
+                        default: return null;
+                    }
+                },
+                SyncCron = TimeSpan.FromSeconds(30)
+            });
+
+
+
 
             var app = builder.Build();
 
 
             using (var scope = app.Services.CreateScope())
             {
-                var invoker = scope.ServiceProvider.GetRequiredService<IObservableInvoker>();
+                var context = scope.ServiceProvider.GetRequiredService<TodoContext>();
+                context.Database.EnsureCreated();
 
-                Task.Run(async () =>
+                var observable = scope.ServiceProvider.GetRequiredService<IObservableInvoker>();
+
+
+
+                scope.ServiceProvider.GetRequiredService<ISyncChanges>().OnChangesSync += (changes) =>
                 {
-                    while (true)
+                    foreach (var change in changes)
                     {
-                        invoker.Notify("task 1", DateTime.Now);
-                        await Task.Delay(10000);
+                        observable.Notify("data updated", change);
                     }
-                });
 
+                };
+
+                var dbSync = scope.ServiceProvider.GetRequiredService<IDbSync>();
+                dbSync.Start();
             }
 
             return app;

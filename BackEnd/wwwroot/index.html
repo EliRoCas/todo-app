@@ -11,22 +11,35 @@
 
 <body>
 
-    <div class="root"></div>
-    <hr>
-    <ul class="subscriptions"></ul>
+    <button id="add">Add random</button>
+    <ol class="subscriptions"></ol>
 
     <script>
-        (async () => {
-            let result = await window.MauiInterop.invoke('WeatherForecast', 'Get', []);
-            document.querySelector('.root').innerHTML = JSON.stringify(result);
 
-            let subscription = window.MauiInterop.subscribe('task 1', result => {
-                document.querySelector('.subscriptions').innerHTML += `<li>${result}</li>`;
-            })
+        document.addEventListener("DOMContentLoaded", async () => {
+
+            await loadMessages();
+
+            let subscription = window.MauiInterop.subscribe('data updated', loadMessages)
+
+            document.querySelector('#add').addEventListener('click', () => {
+                window.MauiInterop.invoke('Messages', 'AddRandom');
+            });
 
             // subscription.unSubscribe(); // I can unSubscribe in any monment
 
-        })();
+        });
+
+        async function loadMessages() {
+            let result = await window.MauiInterop.invoke('Messages', 'Get', []);
+            document.querySelector('.subscriptions').innerHTML = '';
+
+            result.forEach(item => {
+                document.querySelector('.subscriptions').innerHTML += `<li>${JSON.stringify(item)}</li>`;
+            });
+        }
+
+
     </script>
 
 </body>
